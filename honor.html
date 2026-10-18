@@ -18,7 +18,7 @@
     color: #fff;
     line-height: 1.8;
   }
-  .container { max-width: 800px; margin: 0 auto; }
+  .container { max-width: 900px; margin: 0 auto; }
 
   .top-nav {
     background: rgba(0,0,0,0.4);
@@ -30,6 +30,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
   }
   .top-nav a {
     color: #7dd3fc;
@@ -38,6 +40,7 @@
     font-size: 14px;
     padding: 8px 14px;
     border-radius: 20px;
+    transition: all 0.3s;
     background: rgba(125,211,252,0.1);
   }
   .top-nav a:hover { background: #7dd3fc; color: #0a0e27; }
@@ -50,95 +53,197 @@
     border-radius: 20px;
     margin-bottom: 20px;
   }
-  .header h1 { color: #fbbf24; font-size: 30px; margin-bottom: 10px; text-shadow: 0 0 20px rgba(251,191,36,0.5); }
+  .header .badge {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #1a1f3a;
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    box-shadow: 0 0 25px rgba(251,191,36,0.5);
+  }
+  .header h1 { color: #fff; font-size: 32px; margin-bottom: 10px; text-shadow: 0 0 20px rgba(251,191,36,0.6); }
   .header p { color: #94a3b8; font-size: 15px; }
 
-  /* تصميم قائمة الشرف المبسطة */
-  .honor-box {
+  .honor-board {
     background: rgba(0,0,0,0.4);
-    border: 2px solid rgba(251,191,36,0.3);
-    border-radius: 15px;
-    padding: 20px;
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 20px;
+    padding: 25px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+
+  .board-title {
+    text-align: center;
+    color: #fbbf24;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px dashed rgba(251,191,36,0.3);
+  }
+
+  .honor-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
 
   .honor-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(90deg, rgba(251,191,36,0.1), transparent);
-    border-right: 4px solid #fbbf24;
+    background: linear-gradient(90deg, rgba(251,191,36,0.1), rgba(255,255,255,0.02));
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 12px;
     padding: 15px 20px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    font-size: 18px;
     transition: all 0.3s;
+    flex-wrap: wrap;
+    gap: 15px;
   }
 
   .honor-item:hover {
     transform: translateX(-5px);
-    background: linear-gradient(90deg, rgba(251,191,36,0.2), transparent);
+    background: linear-gradient(90deg, rgba(251,191,36,0.2), rgba(255,255,255,0.05));
+    box-shadow: 0 5px 15px rgba(251,191,36,0.2);
+  }
+
+  .student-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .student-name {
+    font-size: 18px;
     font-weight: bold;
     color: #fff;
+    min-width: 120px;
+  }
+
+  .student-meta {
+    font-size: 14px;
+    color: #94a3b8;
+    background: rgba(255,255,255,0.1);
+    padding: 4px 12px;
+    border-radius: 15px;
   }
 
   .student-score {
     background: rgba(16,185,129,0.2);
     color: #6ee7b7;
-    padding: 5px 15px;
+    padding: 6px 16px;
     border-radius: 20px;
-    font-size: 15px;
+    font-weight: bold;
+    font-size: 16px;
     border: 1px solid rgba(16,185,129,0.3);
+    white-space: nowrap;
   }
-  
+
+  .loading-message {
+    text-align: center;
+    color: #94a3b8;
+    padding: 40px;
+    font-size: 16px;
+  }
+
   .footer { text-align: center; margin-top: 30px; padding: 20px; color: #94a3b8; font-size: 13px; }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 24px; }
+    .student-info { flex-direction: column; align-items: flex-start; }
+  }
 </style>
 </head>
 <body>
 
 <div class="container">
+
   <div class="top-nav">
     <a href="index.html">🏠 الرئيسية</a>
     <span class="title">🏆 لوحة الشرف</span>
   </div>
 
   <div class="header">
-    <h1>🏆 لوحة الشرف</h1>
+    <span class="badge">🏆 تحية لأبطالنا</span>
+    <h1>لوحة الشرف</h1>
     <p>أسماء الطلاب المتميزين الحاصلين على العلامة الكاملة</p>
   </div>
 
-  <div class="honor-box">
-    <!-- 
-      🛑 كيفية إضافة طالب جديد:
-      ١. انسخ السطر الذي يحتوي على "اسم الطالب" و "20 / 20" بالكامل.
-      ٢. الصقه فوق هذا التعليق.
-      ٣. غيّر الاسم فقط، واحفظ!
-    -->
-
-    <div class="honor-item">
-      <span class="student-name">محمد أحمد</span>
-      <span class="student-score">20 / 20</span>
+  <div class="honor-board">
+    <div class="board-title">🌟 أبطال المنصة 🌟</div>
+    
+    <div class="honor-list" id="honorList">
+      <div class="loading-message">⏳ جاري تحميل أسماء الأبطال...</div>
     </div>
-
-    <div class="honor-item">
-      <span class="student-name">سارة علي</span>
-      <span class="student-score">20 / 20</span>
-    </div>
-
-    <div class="honor-item">
-      <span class="student-name">عمر خالد</span>
-      <span class="student-score">19 / 20</span>
-    </div>
-
   </div>
 
   <div class="footer">
-    <p>📚 منصة "نتعلم سوياً" – الصف السابع</p>
+    <p>📚 منصة "نتعلم سوياً" – تكنولوجيا المعلومات والاتصالات – الصف السابع</p>
+    <p>إعداد: المعلم كنان سكيف</p>
   </div>
+
 </div>
+
+<script>
+  // رابط جدول Google Sheets الخاص بك
+  const sheetURL = "https://docs.google.com/spreadsheets/d/13UN8Zp1Ewgyt_kSns4rP_CPgYpp5KBzxQzESqOheR9A/gviz/tq?tqx=out:json";
+
+  async function fetchHonorList() {
+    try {
+      const response = await fetch(sheetURL);
+      const text = await response.text();
+      
+      // تحويل استجابة Google Sheets إلى كائن JSON
+      const json = JSON.parse(text.substr(47).slice(0, -2));
+      
+      const rows = json.table.rows;
+      const honorListDiv = document.getElementById('honorList');
+      
+      // مسح رسالة التحميل
+      honorListDiv.innerHTML = '';
+
+      if (!rows || rows.length === 0) {
+        honorListDiv.innerHTML = '<div class="loading-message">لا توجد أسماء مضافة حالياً. كن أول الأبطال! 🌟</div>';
+        return;
+      }
+
+      // عرض الأسماء (تجاهل الصف الأول لأنه العناوين)
+      for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        
+        // استخراج البيانات من الأعمدة الأربعة
+        const name = row.c[0] ? row.c[0].v : "غير معروف";
+        const grade = row.c[1] ? row.c[1].v : "";
+        const section = row.c[2] ? row.c[2].v : "";
+        const score = row.c[3] ? row.c[3].v : "";
+
+        const itemHTML = `
+          <div class="honor-item">
+            <div class="student-info">
+              <span class="student-name">${name}</span>
+              <span class="student-meta">${grade} ${section}</span>
+            </div>
+            <span class="student-score">${score}</span>
+          </div>
+        `;
+        honorListDiv.innerHTML += itemHTML;
+      }
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      document.getElementById('honorList').innerHTML = 
+        '<div class="loading-message" style="color: #ef4444;">⚠️ حدث خطأ أثناء تحميل البيانات. تأكد من أن الجدول مشارك بشكل عام.</div>';
+    }
+  }
+
+  // تشغيل الدالة عند تحميل الصفحة
+  document.addEventListener('DOMContentLoaded', fetchHonorList);
+</script>
 
 </body>
 </html>
