@@ -4,695 +4,796 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <meta name="google" content="notranslate">
-<title>الدرس الرابع: أنظمة العد – نتعلم سوياً</title>
+<title>أنظمة العد والتحويل – عرض تفاعلي</title>
 <link rel="icon" type="image/png" href="logo.png">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a0e27">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="apple-touch-icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
+  /* إعدادات عامة */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: "Tahoma", "Segoe UI", sans-serif;
-    background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f172a 100%);
-    min-height: 100vh;
-    padding: 15px;
+    font-family: 'Cairo', "Tahoma", sans-serif;
+    background: #0a0e27;
+    height: 100vh;
+    overflow: hidden;
     color: #fff;
-    line-height: 1.8;
+    display: flex;
+    flex-direction: column;
   }
-  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* شريط التنقل العلوي */
   .top-nav {
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(125,211,252,0.2);
-    border-radius: 15px;
-    padding: 12px 20px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-    gap: 10px;
+    border-bottom: 2px solid rgba(59,130,246,0.3);
+    z-index: 100;
+    flex-shrink: 0;
   }
   .top-nav a {
     color: #7dd3fc;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 700;
     font-size: 14px;
-    padding: 8px 14px;
+    padding: 6px 14px;
     border-radius: 20px;
+    background: rgba(59,130,246,0.1);
     transition: all 0.3s;
-    background: rgba(125,211,252,0.1);
   }
   .top-nav a:hover { background: #7dd3fc; color: #0a0e27; }
-  .top-nav .title { color: #fbbf24; font-weight: bold; font-size: 14px; }
-  .hero {
-    text-align: center;
-    padding: 30px 20px;
-    background: radial-gradient(circle at center, rgba(6,182,212,0.25) 0%, transparent 70%);
-    border-radius: 20px;
-    margin-bottom: 20px;
-  }
-  .hero .badge {
-    background: linear-gradient(135deg, #06b6d4, #0891b2);
-    color: #fff;
-    display: inline-block;
-    padding: 6px 20px;
-    border-radius: 25px;
-    font-size: 13px;
-    font-weight: bold;
-    margin-bottom: 12px;
-    box-shadow: 0 0 25px rgba(6,182,212,0.5);
-  }
-  .hero h1 { color: #fff; font-size: 32px; margin-bottom: 10px; text-shadow: 0 0 30px rgba(6,182,212,0.6); }
-  .hero p { color: #94a3b8; font-size: 15px; }
-  .tabs {
-    background: rgba(0,0,0,0.3);
-    border-radius: 15px;
-    padding: 10px;
-    margin-bottom: 20px;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .tabs button {
-    background: rgba(255,255,255,0.05);
-    color: #cbd5e1;
-    border: 2px solid transparent;
-    padding: 12px 22px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    font-family: inherit;
-    transition: all 0.3s;
-  }
-  .tabs button:hover { background: rgba(6,182,212,0.15); border-color: rgba(6,182,212,0.3); }
-  .tabs button.active {
-    background: linear-gradient(135deg, #06b6d4, #0891b2);
-    color: #fff;
-    border-color: #67e8f9;
-    box-shadow: 0 0 25px rgba(6,182,212,0.6);
-    transform: scale(1.05);
-  }
-  .content {
-    background: rgba(0,0,0,0.3);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(125,211,252,0.15);
-    border-radius: 20px;
-    padding: 25px;
-    margin-bottom: 20px;
-    min-height: 400px;
-  }
-  .section { display: none; animation: fadeIn 0.5s ease; }
-  .section.active { display: block; }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .section h2 {
-    color: #67e8f9;
-    font-size: 24px;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 3px dashed rgba(6,182,212,0.3);
-  }
-  .section h3 { color: #fbbf24; font-size: 18px; margin: 20px 0 12px; }
-  .card {
-    background: rgba(0,0,0,0.4);
-    border-right: 5px solid #06b6d4;
-    border-radius: 12px;
-    padding: 18px 22px;
-    margin: 15px 0;
-    transition: all 0.3s;
-  }
-  .card:hover { transform: translateX(-5px); background: rgba(0,0,0,0.5); }
-  .card.highlight { border-right-color: #fbbf24; background: linear-gradient(135deg, rgba(251,191,36,0.1), rgba(0,0,0,0.4)); }
-  .card.success { border-right-color: #10b981; background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(0,0,0,0.4)); }
-  .card.info { border-right-color: #06b6d4; background: linear-gradient(135deg, rgba(6,182,212,0.1), rgba(0,0,0,0.4)); }
-  .card strong { color: #67e8f9; }
-  .code-box {
-    background: #0f172a;
-    border: 2px solid #06b6d4;
-    border-radius: 12px;
-    padding: 18px 22px;
-    font-family: "Consolas", "Courier New", monospace;
-    font-size: 15px;
-    line-height: 2;
-    direction: rtl;
-    text-align: right;
-    margin: 15px 0;
-    overflow-x: auto;
-    color: #67e8f9;
-    box-shadow: 0 4px 20px rgba(6,182,212,0.2);
-  }
-  .code-box .key { color: #fbbf24; font-weight: bold; }
-  .code-box .comment { color: #64748b; font-style: italic; }
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 15px 0;
-    background: rgba(0,0,0,0.3);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .table th {
-    background: linear-gradient(135deg, #06b6d4, #0891b2);
-    color: #fff;
-    padding: 12px;
-    font-size: 14px;
-    border: 1px solid rgba(6,182,212,0.2);
-  }
-  .table td {
-    border: 1px solid rgba(6,182,212,0.15);
-    padding: 12px;
-    text-align: center;
-    font-weight: bold;
-    color: #e2e8f0;
-    font-size: 14px;
-    font-family: "Consolas", monospace;
-  }
-  .table tr:nth-child(even) td { background: rgba(0,0,0,0.2); }
-  .content ul, .content ol { padding-right: 25px; margin: 10px 0; color: #e2e8f0; }
-  .content li { margin: 8px 0; font-size: 15px; }
-  .content p { color: #e2e8f0; font-size: 15px; margin: 10px 0; }
-  .nav-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 25px;
-    flex-wrap: wrap;
-  }
-  .nav-buttons a {
+  .top-nav .title { color: #fbbf24; font-weight: 900; font-size: 15px; }
+
+  /* منطقة العرض (المسرح) */
+  .stage {
     flex: 1;
-    min-width: 130px;
-    background: linear-gradient(135deg, #06b6d4, #0891b2);
-    color: #fff;
-    text-align: center;
-    padding: 12px 20px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 14px;
-    transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(6,182,212,0.3);
-  }
-  .nav-buttons a:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(6,182,212,0.5); }
-  .nav-buttons a.green { background: linear-gradient(135deg, #10b981, #059669); }
-  .nav-buttons a.green:hover { box-shadow: 0 8px 25px rgba(16,185,129,0.5); }
-  .btn {
-    display: inline-block;
-    background: linear-gradient(135deg, #06b6d4, #0891b2);
-    color: #fff;
-    padding: 14px 35px;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    font-size: 17px;
-    font-weight: bold;
-    font-family: inherit;
-    transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(6,182,212,0.4);
-  }
-  .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(6,182,212,0.6); }
-  .btn:disabled { background: #475569; cursor: not-allowed; transform: none; box-shadow: none; }
-  .btn.green { background: linear-gradient(135deg, #10b981, #059669); }
-  .btn.red { background: linear-gradient(135deg, #ef4444, #dc2626); }
-  .btn.gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
-  #startScreen { text-align: center; padding: 30px 15px; }
-  #startScreen .info-box {
-    background: rgba(6,182,212,0.1);
-    border: 2px solid rgba(6,182,212,0.3);
-    border-radius: 12px;
-    padding: 20px;
-    margin: 20px 0;
-    color: #67e8f9;
-    font-size: 15px;
-    line-height: 2;
-  }
-  #startScreen input {
-    width: 100%;
-    max-width: 400px;
-    padding: 15px;
-    font-size: 17px;
-    border: 2px solid rgba(6,182,212,0.3);
-    border-radius: 10px;
-    text-align: center;
-    margin: 15px 0;
-    font-family: inherit;
-    background: rgba(0,0,0,0.5);
-    color: #fff;
-  }
-  #startScreen input:focus { outline: none; border-color: #06b6d4; box-shadow: 0 0 0 4px rgba(6,182,212,0.2); }
-  #quizScreen { display: none; }
-  .quiz-header {
-    background: rgba(6,182,212,0.15);
-    border: 1px solid rgba(6,182,212,0.3);
-    border-radius: 12px;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-    color: #67e8f9;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .progress-wrapper {
-    background: rgba(0,0,0,0.4);
-    height: 8px;
-    border-radius: 10px;
+    position: relative;
     overflow: hidden;
-    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
   }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #06b6d4, #0891b2, #67e8f9);
-    width: 0%;
-    transition: width 0.5s ease;
-    box-shadow: 0 0 15px rgba(6,182,212,0.8);
-  }
-  .question-box {
-    background: rgba(0,0,0,0.4);
-    border-right: 5px solid #06b6d4;
-    padding: 20px 25px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-  }
-  .question-box h3 { color: #67e8f9; margin-bottom: 15px; font-size: 17px; line-height: 1.6; }
-  .option {
-    display: block;
-    background: rgba(255,255,255,0.05);
-    border: 2px solid rgba(6,182,212,0.2);
-    padding: 14px 18px;
-    margin: 10px 0;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.25s;
-    font-size: 15px;
-    color: #e2e8f0;
-  }
-  .option:hover { border-color: #06b6d4; background: rgba(6,182,212,0.15); transform: translateX(-5px); }
-  .option.selected {
-    background: linear-gradient(135deg, #06b6d4, #0891b2);
-    color: #fff;
-    border-color: #67e8f9;
-    font-weight: bold;
-    box-shadow: 0 0 20px rgba(6,182,212,0.5);
-  }
-  .quiz-nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; }
-  #resultScreen { display: none; text-align: center; }
-  .result-circle {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    margin: 20px auto;
+
+  /* شريحة (Slide) */
+  .slide {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #fff;
-    font-weight: bold;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    animation: pop 0.6s ease;
-  }
-  @keyframes pop {
-    0% { transform: scale(0); }
-    70% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-  }
-  .result-circle .score { font-size: 48px; line-height: 1; }
-  .result-circle .total { font-size: 20px; opacity: 0.9; }
-  .result-message { font-size: 22px; font-weight: bold; margin: 20px 0; color: #67e8f9; }
-  .certificate {
-    background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.1));
-    border: 3px dashed #fbbf24;
-    border-radius: 15px;
-    padding: 25px;
-    margin-top: 20px;
-  }
-  .certificate h2 { color: #fbbf24; margin-bottom: 15px; font-size: 22px; }
-  .certificate .name {
-    font-size: 28px;
-    color: #67e8f9;
-    font-weight: bold;
-    margin: 15px 0;
-    border-bottom: 2px dotted #67e8f9;
-    display: inline-block;
-    padding-bottom: 5px;
-  }
-  .footer {
-    background: linear-gradient(135deg, rgba(26,77,143,0.3), rgba(15,23,42,0.5));
-    border: 1px solid rgba(125,211,252,0.15);
-    border-radius: 15px;
-    padding: 20px;
+    padding: 20px 40px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0.6s ease, transform 0.6s ease;
+    transform: translateX(50px);
     text-align: center;
-    color: #94a3b8;
-    font-size: 13px;
+    overflow-y: auto;
   }
-  .footer .designer { color: #fbbf24; font-weight: bold; margin: 8px 0; }
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+  .slide.prev {
+    transform: translateX(-50px);
+  }
+
+  /* العناوين */
+  .slide h1 {
+    font-size: 48px;
+    font-weight: 900;
+    color: #7dd3fc;
+    margin-bottom: 20px;
+    text-shadow: 0 0 30px rgba(125,211,252,0.5);
+    line-height: 1.3;
+  }
+  .slide h2 {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fbbf24;
+    margin-bottom: 20px;
+  }
+  .slide p {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.9;
+    color: #e2e8f0;
+    max-width: 900px;
+    margin-bottom: 20px;
+  }
+  .slide .highlight {
+    color: #fbbf24;
+    font-weight: 900;
+    background: rgba(251,191,36,0.15);
+    padding: 2px 10px;
+    border-radius: 8px;
+    display: inline-block;
+  }
+
+  /* تأثير الكتابة (Typewriter) */
+  .typewriter {
+    display: inline-block;
+    overflow: hidden;
+    border-left: 3px solid #fbbf24;
+    white-space: nowrap;
+    animation: typing 3s steps(40, end), blink 0.8s step-end infinite;
+    max-width: 100%;
+  }
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  @keyframes blink {
+    50% { border-color: transparent; }
+  }
+
+  /* الحركات */
+  .animate-in {
+    animation: slideInUp 0.8s ease forwards;
+    opacity: 0;
+  }
+  .delay-1 { animation-delay: 0.3s; }
+  .delay-2 { animation-delay: 0.6s; }
+  .delay-3 { animation-delay: 0.9s; }
+  .delay-4 { animation-delay: 1.2s; }
+  @keyframes slideInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .bounce-in {
+    animation: bounceIn 0.8s ease forwards;
+    opacity: 0;
+  }
+  @keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.3); }
+    50% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* الجداول */
+  .table {
+    width: 100%;
+    max-width: 800px;
+    border-collapse: collapse;
+    margin: 20px auto;
+    background: rgba(0,0,0,0.4);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .table th {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #fff;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 700;
+    border: 1px solid rgba(59,130,246,0.2);
+  }
+  .table td {
+    border: 1px solid rgba(59,130,246,0.15);
+    padding: 15px;
+    text-align: center;
+    font-weight: 700;
+    color: #e2e8f0;
+    font-size: 18px;
+    font-family: monospace;
+  }
+  .table tr:nth-child(even) td { background: rgba(0,0,0,0.2); }
+
+  /* الأمثلة التفاعلية */
+  .binary-display {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 25px 0;
+  }
+  .binary-digit {
+    background: rgba(59,130,246,0.2);
+    border: 2px solid #3b82f6;
+    border-radius: 12px;
+    padding: 15px 20px;
+    text-align: center;
+    min-width: 80px;
+    transition: all 0.4s ease;
+  }
+  .binary-digit .digit { font-size: 36px; font-weight: 900; color: #fbbf24; font-family: monospace; }
+  .binary-digit .power { font-size: 14px; color: #94a3b8; margin-top: 5px; font-family: monospace; }
+  .binary-digit .value { font-size: 16px; color: #6ee7b7; margin-top: 3px; font-weight: 700; }
+  .binary-digit.active {
+    background: rgba(251,191,36,0.3);
+    border-color: #fbbf24;
+    transform: scale(1.15);
+    box-shadow: 0 0 30px rgba(251,191,36,0.6);
+  }
+
+  .division-table {
+    background: rgba(0,0,0,0.5);
+    border: 2px solid rgba(16,185,129,0.5);
+    border-radius: 15px;
+    padding: 20px 25px;
+    font-family: monospace;
+    max-width: 450px;
+    margin: 20px auto;
+    box-shadow: 0 0 30px rgba(16,185,129,0.2);
+  }
+  .division-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 12px 10px;
+    border-bottom: 2px dashed rgba(255,255,255,0.1);
+    font-size: 22px;
+    font-weight: 700;
+    transition: all 0.4s;
+    border-radius: 8px;
+  }
+  .division-row.active {
+    background: rgba(16,185,129,0.25);
+    border-bottom-color: transparent;
+    transform: scale(1.03);
+    box-shadow: 0 0 20px rgba(16,185,129,0.4);
+  }
+  .division-row .num { color: #7dd3fc; }
+  .division-row .remainder { color: #fbbf24; font-weight: 900; font-size: 24px; }
+
+  /* نتيجة التحويل */
+  .result-highlight {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #0a0e27;
+    font-size: 28px;
+    font-weight: 900;
+    padding: 20px 40px;
+    border-radius: 15px;
+    display: inline-block;
+    margin: 20px auto;
+    font-family: monospace;
+    box-shadow: 0 0 40px rgba(251,191,36,0.6);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  /* الأزرار */
+  .btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    color: #fff;
+    padding: 14px 35px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 900;
+    font-family: 'Cairo', sans-serif;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+    margin: 5px;
+  }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(59,130,246,0.5); }
+  .btn.green { background: linear-gradient(135deg, #10b981, #059669); }
+  .btn.gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+  /* شريط التحكم السفلي */
+  .controls {
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
+    border-top: 2px solid rgba(125,211,252,0.2);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    z-index: 100;
+    flex-shrink: 0;
+  }
+  .controls .btn { padding: 10px 25px; font-size: 15px; }
+  .slide-counter {
+    color: #7dd3fc;
+    font-weight: 900;
+    font-size: 16px;
+    background: rgba(59,130,246,0.2);
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(125,211,252,0.3);
+  }
+
+  /* شريط التقدم */
+  .progress-container {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #fbbf24);
+    width: 0%;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 20px rgba(59,130,246,0.8);
+  }
+
+  /* خلفية متحركة */
+  .bg-animation {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .bg-animation .number {
+    position: absolute;
+    font-family: monospace;
+    font-weight: 900;
+    color: rgba(125,211,252,0.08);
+    animation: floatUp linear infinite;
+    user-select: none;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* الجوال */
   @media (max-width: 768px) {
-    .hero h1 { font-size: 22px; }
-    .tabs button { padding: 10px 14px; font-size: 12px; }
-    .content { padding: 18px; }
-    .section h2 { font-size: 19px; }
-    .code-box { font-size: 13px; padding: 14px; }
-    .nav-buttons a { font-size: 12px; padding: 10px 14px; }
-    .result-circle { width: 140px; height: 140px; }
-    .result-circle .score { font-size: 38px; }
+    .slide { padding: 15px 20px; }
+    .slide h1 { font-size: 28px; }
+    .slide h2 { font-size: 22px; }
+    .slide p { font-size: 17px; }
+    .table th, .table td { padding: 8px; font-size: 14px; }
+    .binary-digit { min-width: 60px; padding: 10px; }
+    .binary-digit .digit { font-size: 26px; }
+    .division-row { font-size: 16px; }
+    .division-row .remainder { font-size: 18px; }
+    .result-highlight { font-size: 18px; padding: 12px 20px; }
+    .controls .btn { padding: 8px 15px; font-size: 13px; }
+    .slide-counter { font-size: 13px; padding: 6px 14px; }
   }
 </style>
 </head>
 <body>
 
-<div class="container">
+<!-- شريط التقدم -->
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
 
-  <div class="top-nav">
-    <a href="index.html">🏠 الرئيسية</a>
-    <span class="title">📖 الدرس الرابع: أنظمة العد</span>
+<!-- الخلفية المتحركة -->
+<div class="bg-animation" id="bgAnimation"></div>
+
+<!-- شريط التنقل -->
+<div class="top-nav">
+  <a href="grade7.html">🏠 الرئيسية</a>
+  <span class="title">🔢 أنظمة العد والتحويل</span>
+</div>
+
+<!-- المسرح -->
+<div class="stage">
+
+  <!-- الشريحة 1: المقدمة -->
+  <div class="slide active" id="slide-1">
+    <h1 class="bounce-in">🔢 أنظمة العد</h1>
+    <p class="animate-in delay-1">مرحباً بك! اليوم سنكتشف كيف يفهم الحاسوب الأرقام.</p>
+    <p class="animate-in delay-2" style="color:#94a3b8; font-size:20px;">هل تعلم أن الحاسوب لا يفهم إلا <span class="highlight">0 و 1</span>؟</p>
+    <div class="animate-in delay-3" style="font-size:80px; margin-top:20px;">💻</div>
   </div>
 
-  <div class="hero">
-    <span class="badge">📖 الدرس الرابع</span>
-    <h1>🔢 أنظمة العد</h1>
-    <p>النظام العشري – النظام الثنائي – البت والبايت</p>
+  <!-- الشريحة 2: مفهوم نظام العد -->
+  <div class="slide" id="slide-2">
+    <h2 class="animate-in">📖 ما هو نظام العد؟</h2>
+    <p class="animate-in delay-1">نظام العد هو <span class="highlight">طريقة لتمثيل الأعداد</span> باستخدام رموز محددة.</p>
+    <p class="animate-in delay-2">نحن البشر نستخدم النظام <span class="highlight">العشري</span> (0 إلى 9).</p>
+    <p class="animate-in delay-3">لكن الحاسوب يستخدم النظام <span class="highlight">الثنائي</span> (0 و 1 فقط).</p>
   </div>
 
-  <div class="tabs">
-    <button class="active" onclick="showTab('tab1', this)">📖 الشرح</button>
-    <button onclick="showTab('tab2', this)">📝 الأمثلة</button>
-    <button onclick="showTab('tab3', this)">🎯 الاختبار</button>
-  </div>
-
-  <div class="content">
-
-    <div id="tab1" class="section active">
-      <h2>📖 مفهوم أنظمة العد</h2>
-
-      <div class="card highlight">
-        <strong>نظام العد:</strong> هو طريقة لتمثيل الأعداد باستخدام رموز محددة.
+  <!-- الشريحة 3: لماذا الثنائي؟ -->
+  <div class="slide" id="slide-3">
+    <h2 class="animate-in">⚡ لماذا يستخدم الحاسوب النظام الثنائي؟</h2>
+    <p class="animate-in delay-1">لأن الحاسوب جهاز إلكتروني يتعامل مع <span class="highlight">الإشارات الكهربائية</span>.</p>
+    <div class="animate-in delay-2" style="display:flex; gap:30px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
+      <div style="background:rgba(251,191,36,0.2); border:2px solid #fbbf24; border-radius:15px; padding:20px 30px;">
+        <div style="font-size:50px;">💡</div>
+        <div style="font-size:28px; font-weight:900; color:#fbbf24;">1</div>
+        <div style="font-size:16px; color:#94a3b8;">تيار يمر</div>
       </div>
-
-      <h3>🔧 أنواع أنظمة العد:</h3>
-      <table class="table">
-        <tr>
-          <th>النظام</th>
-          <th>الأساس</th>
-          <th>الرموز</th>
-          <th>مثال</th>
-        </tr>
-        <tr>
-          <td><strong>العشري</strong></td>
-          <td>١٠</td>
-          <td>٠ - ٩</td>
-          <td>٢٥</td>
-        </tr>
-        <tr>
-          <td><strong>الثنائي</strong></td>
-          <td>٢</td>
-          <td>٠ ، ١</td>
-          <td>١١٠٠١</td>
-        </tr>
-      </table>
-
-      <h3>💡 لماذا يستخدم الحاسوب النظام الثنائي؟</h3>
-      <div class="card info">
-        <p>لأن الحاسوب جهاز إلكتروني يتعامل مع إشارات كهربائية لها حالتان فقط:</p>
-        <ul>
-          <li><strong>وجود تيار</strong> ← يرمز له بالرقم <strong>1</strong></li>
-          <li><strong>عدم وجود تيار</strong> ← يرمز له بالرقم <strong>0</strong></li>
-        </ul>
-      </div>
-
-      <h3>📌 المصطلحات المهمة:</h3>
-      <table class="table">
-        <tr>
-          <th>المصطلح</th>
-          <th>المعنى</th>
-        </tr>
-        <tr>
-          <td><strong>البت (Bit)</strong></td>
-          <td>أصغر وحدة تخزين، قيمته إما 0 أو 1</td>
-        </tr>
-        <tr>
-          <td><strong>البايت (Byte)</strong></td>
-          <td>يتكون من 8 بتات</td>
-        </tr>
-        <tr>
-          <td><strong>الكيلوبايت (KB)</strong></td>
-          <td>1024 بايت</td>
-        </tr>
-        <tr>
-          <td><strong>الميجابايت (MB)</strong></td>
-          <td>1024 كيلوبايت</td>
-        </tr>
-        <tr>
-          <td><strong>الجيجابايت (GB)</strong></td>
-          <td>1024 ميجابايت</td>
-        </tr>
-      </table>
-
-      <div class="card success">
-        <strong>💡 تذكر:</strong><br>
-        - البت = 0 أو 1<br>
-        - البايت = 8 بتات<br>
-        - النظام الثنائي أساسه 2
+      <div style="background:rgba(148,163,184,0.2); border:2px solid #94a3b8; border-radius:15px; padding:20px 30px;">
+        <div style="font-size:50px;">🔌</div>
+        <div style="font-size:28px; font-weight:900; color:#94a3b8;">0</div>
+        <div style="font-size:16px; color:#94a3b8;">تيار ينقطع</div>
       </div>
     </div>
-
-    <div id="tab2" class="section">
-      <h2>📝 أمثلة عملية</h2>
-
-      <h3>📌 مثال ١: تمثيل الحروف بالنظام الثنائي</h3>
-      <p>الحاسوب يحول الحروف إلى أرقام ثم إلى ثنائي:</p>
-      <table class="table">
-        <tr>
-          <th>الحرف</th>
-          <th>الرقم العشري</th>
-          <th>التمثيل الثنائي</th>
-        </tr>
-        <tr>
-          <td>A</td>
-          <td>65</td>
-          <td>01000001</td>
-        </tr>
-        <tr>
-          <td>B</td>
-          <td>66</td>
-          <td>01000010</td>
-        </tr>
-        <tr>
-          <td>a</td>
-          <td>97</td>
-          <td>01100001</td>
-        </tr>
-      </table>
-
-      <h3>📌 مثال ٢: قوى العدد ٢</h3>
-      <p>قوى العدد ٢ أساس التحويل بين الأنظمة:</p>
-      <table class="table">
-        <tr>
-          <th>2⁰</th><th>2¹</th><th>2²</th><th>2³</th><th>2⁴</th><th>2⁵</th><th>2⁶</th><th>2⁷</th><th>2⁸</th>
-        </tr>
-        <tr>
-          <td>1</td><td>2</td><td>4</td><td>8</td><td>16</td><td>32</td><td>64</td><td>128</td><td>256</td>
-        </tr>
-      </table>
-
-      <h3>📌 مثال ٣: عدد الأعداد الممكن تمثيلها</h3>
-      <div class="card">
-        <p><strong>عدد الأعداد = 2^(عدد البتات)</strong></p>
-        <ul>
-          <li>1 بت ← 2 أعداد (0، 1)</li>
-          <li>2 بت ← 4 أعداد (0 إلى 3)</li>
-          <li>3 بت ← 8 أعداد (0 إلى 7)</li>
-          <li>4 بت ← 16 عدداً (0 إلى 15)</li>
-          <li>8 بت (بايت) ← 256 عدداً (0 إلى 255)</li>
-        </ul>
-      </div>
-
-      <div class="card success">
-        <strong>💡 قاعدة:</strong><br>
-        أكبر عدد يمكن تمثيله بعدد n من البتات = 2^n - 1
-      </div>
-    </div>
-
-    <div id="tab3" class="section">
-      <h2>🎯 اختبار الدرس الرابع</h2>
-
-      <div id="startScreen">
-        <div class="info-box">
-          📝 <strong>عدد الأسئلة:</strong> 10<br>
-          ⏰ <strong>الزمن المقترح:</strong> 15 دقيقة<br>
-          📊 <strong>العلامة الكاملة:</strong> 20
-        </div>
-        <input type="text" id="studentName" placeholder="✍️ اكتب اسمك الكامل هنا" maxlength="50">
-        <br>
-        <button class="btn green" onclick="startQuiz()">🚀 ابدأ الاختبار</button>
-      </div>
-
-      <div id="quizScreen">
-        <div class="quiz-header">
-          <span>👤 <span id="displayName"></span></span>
-          <span>📋 سؤال <span id="currentNum">1</span> من <span id="totalNum">10</span></span>
-        </div>
-        <div class="progress-wrapper">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-        <div id="questionArea"></div>
-        <div class="quiz-nav">
-          <button class="btn red" id="prevBtn" onclick="prevQuestion()" disabled>⬅️ السابق</button>
-          <button class="btn green" id="nextBtn" onclick="nextQuestion()">التالي ➡️</button>
-        </div>
-      </div>
-
-      <div id="resultScreen">
-        <h2 style="color: #67e8f9; margin-bottom: 20px;">🎉 انتهى الاختبار!</h2>
-        <div class="result-circle" id="resultCircle">
-          <div class="score" id="scoreDisplay">0</div>
-          <div class="total">من 20</div>
-        </div>
-        <div class="result-message" id="resultMessage"></div>
-
-        <div class="certificate">
-          <h2>🏆 شهادة إتمام الاختبار</h2>
-          <p>تشهد هذه الشهادة بأن الطالب/ة</p>
-          <div class="name" id="certName"></div>
-          <p>قد أكمل اختبار الدرس الرابع: <strong>أنظمة العد</strong></p>
-          <p style="margin-top: 10px;">بنتيجة <span id="certScore"></span> من 20</p>
-          <p style="margin-top: 10px; color: #fbbf24;" id="certDate"></p>
-        </div>
-
-        <div style="margin-top: 25px;">
-          <button class="btn gold" onclick="location.reload()">🔄 إعادة الاختبار</button>
-        </div>
-      </div>
-    </div>
-
   </div>
 
-  <div class="nav-buttons">
-    <a href="lesson3.html">⬅️ الدرس السابق</a>
-    <a href="index.html">🏠 الرئيسية</a>
-    <a href="lesson5.html" class="green">الدرس التالي ➡️</a>
+  <!-- الشريحة 4: المصطلحات -->
+  <div class="slide" id="slide-4">
+    <h2 class="animate-in">📌 المصطلحات المهمة</h2>
+    <table class="table animate-in delay-1">
+      <tr>
+        <th>المصطلح</th>
+        <th>المعنى</th>
+      </tr>
+      <tr>
+        <td><strong>البت (Bit)</strong></td>
+        <td>أصغر وحدة تخزين، قيمته إما 0 أو 1</td>
+      </tr>
+      <tr>
+        <td><strong>البايت (Byte)</strong></td>
+        <td>يتكون من 8 بتات</td>
+      </tr>
+      <tr>
+        <td><strong>الكيلوبايت (KB)</strong></td>
+        <td>1024 بايت</td>
+      </tr>
+      <tr>
+        <td><strong>الميجابايت (MB)</strong></td>
+        <td>1024 كيلوبايت</td>
+      </tr>
+    </table>
   </div>
 
-  <div class="footer">
-    <p>📚 <strong style="color: #67e8f9;">نتعلم سوياً</strong> – تكنولوجيا المعلومات والاتصالات – الصف السابع</p>
-    <p class="designer">🎨 تصميم: المعلم كنان سكيف &amp; </p>
-    <p>© 2025 – جميع الحقوق محفوظة</p>
+  <!-- الشريحة 5: قوى العدد 2 -->
+  <div class="slide" id="slide-5">
+    <h2 class="animate-in">🔢 قوى العدد 2 (أساس التحويل)</h2>
+    <p class="animate-in delay-1">يجب حفظ هذه القوى جيداً:</p>
+    <table class="table animate-in delay-2">
+      <tr>
+        <th>2⁰</th><th>2¹</th><th>2²</th><th>2³</th><th>2⁴</th><th>2⁵</th><th>2⁶</th><th>2⁷</th>
+      </tr>
+      <tr>
+        <td>1</td><td>2</td><td>4</td><td>8</td><td>16</td><td>32</td><td>64</td><td>128</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- الشريحة 6: قاعدة عدد الأعداد -->
+  <div class="slide" id="slide-6">
+    <h2 class="animate-in">📊 قاعدة مهمة</h2>
+    <p class="animate-in delay-1">عدد الأعداد الممكن تمثيلها = <span class="highlight">2^(عدد البتات)</span></p>
+    <table class="table animate-in delay-2">
+      <tr>
+        <th>عدد البتات</th>
+        <th>عدد الأعداد الممكنة</th>
+        <th>المدى</th>
+      </tr>
+      <tr>
+        <td>1 بت</td>
+        <td>2</td>
+        <td>0 إلى 1</td>
+      </tr>
+      <tr>
+        <td>2 بت</td>
+        <td>4</td>
+        <td>0 إلى 3</td>
+      </tr>
+      <tr>
+        <td>3 بت</td>
+        <td>8</td>
+        <td>0 إلى 7</td>
+      </tr>
+      <tr>
+        <td>4 بت</td>
+        <td>16</td>
+        <td>0 إلى 15</td>
+      </tr>
+      <tr>
+        <td>8 بت (بايت)</td>
+        <td>256</td>
+        <td>0 إلى 255</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- الشريحة 7: التحويل من ثنائي إلى عشري -->
+  <div class="slide" id="slide-7">
+    <h2 class="animate-in">🔢 التحويل من ثنائي إلى عشري</h2>
+    <p class="animate-in delay-1"><strong>القاعدة:</strong> اضرب في قوى 2 ثم اجمع.</p>
+    <div class="binary-display animate-in delay-2" id="example1">
+      <div class="binary-digit">
+        <div class="digit">1</div>
+        <div class="power">2²</div>
+        <div class="value">× 4 = 4</div>
+      </div>
+      <div class="binary-digit">
+        <div class="digit">1</div>
+        <div class="power">2¹</div>
+        <div class="value">× 2 = 2</div>
+      </div>
+      <div class="binary-digit">
+        <div class="digit">0</div>
+        <div class="power">2⁰</div>
+        <div class="value">× 1 = 0</div>
+      </div>
+    </div>
+    <div id="result1" style="margin-top:15px;"></div>
+    <div class="animate-in delay-4">
+      <button class="btn green" onclick="animateExample1()">▶️ شاهد الحل</button>
+    </div>
+  </div>
+
+  <!-- الشريحة 8: مثال 2 للتحويل -->
+  <div class="slide" id="slide-8">
+    <h2 class="animate-in">🔢 مثال آخر: (1011)₂</h2>
+    <div class="binary-display animate-in delay-1" id="example2">
+      <div class="binary-digit">
+        <div class="digit">1</div>
+        <div class="power">2³</div>
+        <div class="value">× 8 = 8</div>
+      </div>
+      <div class="binary-digit">
+        <div class="digit">0</div>
+        <div class="power">2²</div>
+        <div class="value">× 4 = 0</div>
+      </div>
+      <div class="binary-digit">
+        <div class="digit">1</div>
+        <div class="power">2¹</div>
+        <div class="value">× 2 = 2</div>
+      </div>
+      <div class="binary-digit">
+        <div class="digit">1</div>
+        <div class="power">2⁰</div>
+        <div class="value">× 1 = 1</div>
+      </div>
+    </div>
+    <div id="result2" style="margin-top:15px;"></div>
+    <div class="animate-in delay-3">
+      <button class="btn green" onclick="animateExample2()">▶️ شاهد الحل</button>
+    </div>
+  </div>
+
+  <!-- الشريحة 9: التحويل من عشري إلى ثنائي -->
+  <div class="slide" id="slide-9">
+    <h2 class="animate-in">💻 التحويل من عشري إلى ثنائي</h2>
+    <p class="animate-in delay-1"><strong>القاعدة:</strong> اقسم على 2 واقرأ البواقي من الأسفل.</p>
+    <div class="division-table animate-in delay-2" id="divisionExample1"></div>
+    <div id="divResult1" style="margin-top:15px;"></div>
+    <div class="animate-in delay-3">
+      <button class="btn green" onclick="animateDivision1()">▶️ شاهد الحل</button>
+    </div>
+  </div>
+
+  <!-- الشريحة 10: مثال 2 للقسمة -->
+  <div class="slide" id="slide-10">
+    <h2 class="animate-in">💻 مثال آخر: (25)₁₀</h2>
+    <div class="division-table animate-in delay-1" id="divisionExample2"></div>
+    <div id="divResult2" style="margin-top:15px;"></div>
+    <div class="animate-in delay-3">
+      <button class="btn green" onclick="animateDivision2()">▶️ شاهد الحل</button>
+    </div>
+  </div>
+
+  <!-- الشريحة 11: جدول المقارنة -->
+  <div class="slide" id="slide-11">
+    <h2 class="animate-in">📊 جدول المقارنة السريع</h2>
+    <table class="table animate-in delay-1">
+      <tr>
+        <th>العملية</th>
+        <th>القاعدة الذهبية</th>
+        <th>مثال</th>
+      </tr>
+      <tr>
+        <td><strong>ثنائي ← عشري</strong></td>
+        <td><strong>اضرب</strong> في قوى 2 ثم <strong>اجمع</strong></td>
+        <td>(110)₂ = 6</td>
+      </tr>
+      <tr>
+        <td><strong>عشري ← ثنائي</strong></td>
+        <td><strong>اقسم</strong> على 2 واقرأ البواقي <strong>من الأسفل</strong></td>
+        <td>(13)₁₀ = 1101</td>
+      </tr>
+    </table>
+    <p class="animate-in delay-2" style="font-size:26px; color:#fbbf24; font-weight:900; margin-top:20px;">
+      🔹 ثنائي → عشري: <span class="highlight">اضرب واجمع</span><br>
+      🔹 عشري → ثنائي: <span class="highlight">اقسم واقرأ من الأسفل</span>
+    </p>
+  </div>
+
+  <!-- الشريحة 12: الخاتمة -->
+  <div class="slide" id="slide-12">
+    <h1 class="bounce-in">🎉 أحسنت!</h1>
+    <p class="animate-in delay-1">أنت الآن تعرف كيف تحول بين النظامين!</p>
+    <p class="animate-in delay-2" style="font-size:20px; color:#94a3b8;">هل تريد تجربة التحويل بنفسك؟</p>
+    <div class="animate-in delay-3" style="margin-top:20px;">
+      <a href="lesson5.html" class="btn gold" style="text-decoration:none; display:inline-block;">🚀 جرب المحاكي</a>
+    </div>
   </div>
 
 </div>
 
+<!-- شريط التحكم -->
+<div class="controls">
+  <button class="btn" id="prevBtn" onclick="prevSlide()" disabled>→ السابق</button>
+  <span class="slide-counter" id="slideCounter">1 / 12</span>
+  <button class="btn green" id="nextBtn" onclick="nextSlide()">التالي ←</button>
+</div>
+
 <script>
-function showTab(id, btn) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  if (btn) btn.classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+/* ========== المتغيرات ========== */
+let currentSlide = 1;
+const totalSlides = 12;
+
+/* ========== الخلفية المتحركة ========== */
+function createBgNumbers() {
+  const bg = document.getElementById('bgAnimation');
+  for (let i = 0; i < 30; i++) {
+    const num = document.createElement('div');
+    num.className = 'number';
+    num.textContent = Math.random() > 0.5 ? '0' : '1';
+    num.style.left = Math.random() * 100 + '%';
+    num.style.fontSize = (Math.random() * 50 + 20) + 'px';
+    num.style.animationDuration = (Math.random() * 20 + 15) + 's';
+    num.style.animationDelay = (Math.random() * 10) + 's';
+    bg.appendChild(num);
+  }
 }
+createBgNumbers();
 
-const questions = [
-  { q: "ما هو نظام العد؟", options: ["لغة برمجة", "طريقة لتمثيل الأعداد", "جهاز إلكتروني", "برنامج"], correct: 1 },
-  { q: "ما أساس النظام العشري؟", options: ["2", "8", "10", "16"], correct: 2 },
-  { q: "ما أساس النظام الثنائي؟", options: ["2", "8", "10", "16"], correct: 0 },
-  { q: "الرموز المستخدمة في النظام الثنائي هي:", options: ["0-9", "0، 1", "1-5", "0-7"], correct: 1 },
-  { q: "البت هو:", options: ["8 بايت", "أصغر وحدة تخزين", "1024 كيلوبايت", "برنامج حماية"], correct: 1 },
-  { q: "كم عدد البتات في البايت الواحد؟", options: ["4", "8", "16", "32"], correct: 1 },
-  { q: "لماذا يستخدم الحاسوب النظام الثنائي؟", options: ["لأنه أسرع", "لأنه يتعامل مع إشارات كهربائية (1/0)", "لأنه أرخص", "لأنه أجمل"], correct: 1 },
-  { q: "2⁸ = ؟", options: ["128", "256", "512", "64"], correct: 1 },
-  { q: "عدد الأعداد الممكن تمثيلها بـ 4 بتات هو:", options: ["8", "15", "16", "32"], correct: 2 },
-  { q: "أكبر عدد يمكن تمثيله بـ 3 بتات هو:", options: ["3", "7", "8", "15"], correct: 1 }
-];
-
-let studentName = "";
-let currentIndex = 0;
-let userAnswers = new Array(questions.length).fill(null);
-const scorePerQuestion = 2;
-
-function startQuiz() {
-  const nameInput = document.getElementById('studentName').value.trim();
-  if (!nameInput) { alert("⚠️ الرجاء إدخال اسمك أولاً"); return; }
-  if (nameInput.length < 3) { alert("⚠️ الرجاء إدخال اسمك كاملاً"); return; }
-  studentName = nameInput;
-  document.getElementById('displayName').textContent = studentName;
-  document.getElementById('totalNum').textContent = questions.length;
-  document.getElementById('startScreen').style.display = 'none';
-  document.getElementById('quizScreen').style.display = 'block';
-  renderQuestion();
-}
-
-function renderQuestion() {
-  const q = questions[currentIndex];
-  const area = document.getElementById('questionArea');
-  document.getElementById('currentNum').textContent = currentIndex + 1;
-  let html = `<div class="question-box"><h3>س ${currentIndex + 1}: ${q.q}</h3>`;
-  q.options.forEach((opt, i) => {
-    const selected = userAnswers[currentIndex] === i ? 'selected' : '';
-    html += `<div class="option ${selected}" onclick="selectOption(${i})">${opt}</div>`;
+/* ========== التنقل بين الشرائح ========== */
+function showSlide(num) {
+  document.querySelectorAll('.slide').forEach(s => {
+    s.classList.remove('active', 'prev');
   });
-  html += `</div>`;
-  area.innerHTML = html;
-  document.getElementById('prevBtn').disabled = currentIndex === 0;
-  const nextBtn = document.getElementById('nextBtn');
-  if (currentIndex === questions.length - 1) {
-    nextBtn.textContent = "✅ إنهاء الاختبار";
-    nextBtn.onclick = finishQuiz;
-  } else {
-    nextBtn.textContent = "التالي ➡️";
-    nextBtn.onclick = nextQuestion;
+  
+  const target = document.getElementById('slide-' + num);
+  if (target) {
+    target.classList.add('active');
+    // إعادة تشغيل الحركات
+    target.querySelectorAll('.animate-in, .bounce-in').forEach(el => {
+      el.style.animation = 'none';
+      el.offsetHeight; // trigger reflow
+      el.style.animation = '';
+    });
   }
-  const progress = ((currentIndex + 1) / questions.length) * 100;
-  document.getElementById('progressFill').style.width = progress + '%';
+  
+  currentSlide = num;
+  
+  // تحديث العداد
+  document.getElementById('slideCounter').textContent = `${num} / ${totalSlides}`;
+  
+  // تحديث الأزرار
+  document.getElementById('prevBtn').disabled = (num === 1);
+  document.getElementById('nextBtn').disabled = (num === totalSlides);
+  
+  // تحديث شريط التقدم
+  const progress = (num / totalSlides) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
 }
 
-function selectOption(index) {
-  userAnswers[currentIndex] = index;
-  renderQuestion();
+function nextSlide() {
+  if (currentSlide < totalSlides) {
+    showSlide(currentSlide + 1);
+  }
 }
 
-function nextQuestion() {
-  if (userAnswers[currentIndex] === null) { alert("⚠️ الرجاء اختيار إجابة"); return; }
-  if (currentIndex < questions.length - 1) { currentIndex++; renderQuestion(); }
+function prevSlide() {
+  if (currentSlide > 1) {
+    showSlide(currentSlide - 1);
+  }
 }
 
-function prevQuestion() {
-  if (currentIndex > 0) { currentIndex--; renderQuestion(); }
-}
-
-function finishQuiz() {
-  const unanswered = userAnswers.findIndex(a => a === null);
-  if (unanswered !== -1) {
-    if (!confirm(`⚠️ لم تجب على السؤال ${unanswered + 1}. هل تريد المتابعة؟`)) {
-      currentIndex = unanswered;
-      renderQuestion();
-      return;
+/* ========== المثال 1: (110)₂ = 6 ========== */
+function animateExample1() {
+  const digits = document.querySelectorAll('#example1 .binary-digit');
+  const result = document.getElementById('result1');
+  result.innerHTML = '';
+  digits.forEach(d => d.classList.remove('active'));
+  
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i < digits.length) {
+      digits[i].classList.add('active');
+      i++;
+    } else {
+      clearInterval(interval);
+      result.innerHTML = '<div class="result-highlight">1×4 + 1×2 + 0×1 = 6<br>(110)₂ = (6)₁₀</div>';
     }
-  }
-  let score = 0;
-  questions.forEach((q, i) => { if (userAnswers[i] === q.correct) score += scorePerQuestion; });
-  document.getElementById('quizScreen').style.display = 'none';
-  document.getElementById('resultScreen').style.display = 'block';
-  document.getElementById('scoreDisplay').textContent = score;
-  const percent = (score / 20) * 100;
-  const circle = document.getElementById('resultCircle');
-  let color, message;
-  if (percent >= 90) { color = 'linear-gradient(135deg, #10b981, #5cb85c)'; message = "🏆 ممتاز! أنت متمكن!"; }
-  else if (percent >= 75) { color = 'linear-gradient(135deg, #06b6d4, #5cb85c)'; message = "👍 جيد جداً!"; }
-  else if (percent >= 60) { color = 'linear-gradient(135deg, #f59e0b, #fbbf24)'; message = "📖 جيد، راجع القواعد."; }
-  else if (percent >= 50) { color = 'linear-gradient(135deg, #f59e0b, #d97706)'; message = "⚠️ مقبول."; }
-  else { color = 'linear-gradient(135deg, #ef4444, #dc2626)'; message = "📚 راجع الدرس."; }
-  circle.style.background = color;
-  document.getElementById('resultMessage').textContent = message;
-  document.getElementById('certName').textContent = studentName;
-  document.getElementById('certScore').textContent = score;
-  document.getElementById('certDate').textContent = '📅 ' + new Date().toLocaleDateString('ar-SY');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 800);
 }
+
+/* ========== المثال 2: (1011)₂ = 11 ========== */
+function animateExample2() {
+  const digits = document.querySelectorAll('#example2 .binary-digit');
+  const result = document.getElementById('result2');
+  result.innerHTML = '';
+  digits.forEach(d => d.classList.remove('active'));
+  
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i < digits.length) {
+      digits[i].classList.add('active');
+      i++;
+    } else {
+      clearInterval(interval);
+      result.innerHTML = '<div class="result-highlight">1×8 + 0×4 + 1×2 + 1×1 = 11<br>(1011)₂ = (11)₁₀</div>';
+    }
+  }, 800);
+}
+
+/* ========== المثال 3: (13)₁₀ = 1101 ========== */
+function animateDivision1() {
+  const table = document.getElementById('divisionExample1');
+  const result = document.getElementById('divResult1');
+  table.innerHTML = '';
+  result.innerHTML = '';
+  
+  const steps = [
+    { num: 13, quotient: 6, remainder: 1 },
+    { num: 6, quotient: 3, remainder: 0 },
+    { num: 3, quotient: 1, remainder: 1 },
+    { num: 1, quotient: 0, remainder: 1 }
+  ];
+  
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i < steps.length) {
+      const step = steps[i];
+      table.querySelectorAll('.division-row').forEach(r => r.classList.remove('active'));
+      const row = document.createElement('div');
+      row.className = 'division-row active';
+      row.innerHTML = `<span class="num">${step.num} ÷ 2 = ${step.quotient}</span><span class="remainder">الباقي: ${step.remainder}</span>`;
+      table.appendChild(row);
+      i++;
+    } else {
+      clearInterval(interval);
+      result.innerHTML = '<div class="result-highlight">نقرأ من الأسفل: 1 1 0 1<br>(13)₁₀ = (1101)₂</div>';
+    }
+  }, 1000);
+}
+
+/* ========== المثال 4: (25)₁₀ = 11001 ========== */
+function animateDivision2() {
+  const table = document.getElementById('divisionExample2');
+  const result = document.getElementById('divResult2');
+  table.innerHTML = '';
+  result.innerHTML = '';
+  
+  const steps = [
+    { num: 25, quotient: 12, remainder: 1 },
+    { num: 12, quotient: 6, remainder: 0 },
+    { num: 6, quotient: 3, remainder: 0 },
+    { num: 3, quotient: 1, remainder: 1 },
+    { num: 1, quotient: 0, remainder: 1 }
+  ];
+  
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i < steps.length) {
+      const step = steps[i];
+      table.querySelectorAll('.division-row').forEach(r => r.classList.remove('active'));
+      const row = document.createElement('div');
+      row.className = 'division-row active';
+      row.innerHTML = `<span class="num">${step.num} ÷ 2 = ${step.quotient}</span><span class="remainder">الباقي: ${step.remainder}</span>`;
+      table.appendChild(row);
+      i++;
+    } else {
+      clearInterval(interval);
+      result.innerHTML = '<div class="result-highlight">نقرأ من الأسفل: 1 1 0 0 1<br>(25)₁₀ = (11001)₂</div>';
+    }
+  }, 1000);
+}
+
+/* ========== التنقل بلوحة المفاتيح ========== */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+    if (e.key === 'ArrowLeft') nextSlide();
+    if (e.key === 'ArrowRight') prevSlide();
+  }
+});
+
+/* ========== التهيئة ========== */
+showSlide(1);
 </script>
 
 </body>
